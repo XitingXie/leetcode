@@ -1,41 +1,34 @@
 char* longestPalindrome(char* s) {
-    int cur=0;
+	
+	if(s==NULL) return NULL;
+
     int longest = 1;
     int N = strlen(s);
-    int i,j,length;
+    int i,j,m,k;
     int start=0,end=0;
+	
+	if(N==1||N==0) return s;
     
-    while(cur+1<N){
-        if(s[cur] == s[cur+1]){
-            i = cur-1;j=cur+2;
-            length=2;
-        }
-        else{
-            i=cur-1;j=cur+1;
-            length = 1;
-        }
-        
-        while(i>-1 && j<N){
-            if(s[i] == s[j]){
-                length +=2;
-                --i;
-                j++;
+	for(i=0;i<N-longest;i++){
+		j = N-1;
+		while(j-i+1>longest){
+			m=i;
+			k=j;
+			while(m<k){
+				if(s[m] != s[k]) break;
+				m++;--k;
             }
-            break;
-        }
-        
-        if(longest<length) {
-            longest = length;
-            start = i+1;
-            end = j-1;
-        }
-        cur++;
-    }
+			if(m>k || m==k){
+				longest = j-i+1;
+				start = i;
+				end = j;
+				break;
+			}
+			--j;
+		}
+	}
     
-    char *new_S = (char*)malloc(sizeof(char)*(longest+1));
-    for(i=0;i<longest;i++){
-        new_S[i] = s[start+i];
-    }
+    s[end+1] = '\0';
     
-    return new_S;
+    return s+start;
 }
